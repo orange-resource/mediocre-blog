@@ -1,0 +1,1 @@
+# MEDIOCRE BLOG 1.0.0

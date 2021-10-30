@@ -1,0 +1,164 @@
+<template>
+
+  <div id="app">
+    <el-row :gutter="0">
+
+      <el-col :span="24">
+
+        <el-card v-show="searchWorkspace == false" shadow="always" style="text-align: center">
+          <i class="el-icon-upload"/>
+          <span> 操作</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="searchWorkspace = !searchWorkspace">
+            展示
+          </el-button>
+        </el-card>
+
+        <el-card v-show="searchWorkspace == true" class="box-card" shadow="always">
+          <div slot="header" class="clearfix">
+            <i class="el-icon-upload"/>
+            <span> 操作</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="searchWorkspace = !searchWorkspace">
+              收起
+            </el-button>
+          </div>
+
+          <el-form
+            ref="form"
+            :model="form"
+            :status-icon="true"
+            label-width="108px"
+            class="demo-ruleForm">
+
+            <el-form-item label="网站logo" required>
+              <single-upload-image :url.sync="form.logoUrl"/>
+            </el-form-item>
+
+            <el-form-item label="网站标题" required>
+              <el-input v-model="form.title" class="common-width"/>
+            </el-form-item>
+
+            <el-form-item label="网站关键词" required>
+              <el-input v-model="form.keywords" rows="4" type="textarea" class="common-width"/>
+            </el-form-item>
+
+            <el-form-item label="网站描述" required>
+              <el-input
+                v-model="form.description"
+                rows="6"
+                type="textarea"
+                class="common-width"/>
+            </el-form-item>
+
+            <el-form-item label="网站底部信息" required>
+              <el-input v-model="form.footer" rows="6" type="textarea" class="common-width"/>
+            </el-form-item>
+
+            <el-form-item label="页面颜色 0=正常 1=灰色" required>
+              <el-input v-model="form.pageGray" class="common-width"/>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('form')">{{ formButtonName }}</el-button>
+            </el-form-item>
+
+          </el-form>
+
+        </el-card>
+
+      </el-col>
+
+    </el-row>
+
+  </div>
+
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // 收起放下
+      searchWorkspace: true,
+
+      formButtonName: '立即创建',
+
+      isCreate: 0,
+
+      // 表单配置
+      form: {
+        logoUrl: '',
+        title: '',
+        keywords: '',
+        description: '',
+        footer: '',
+        pageGray: ''
+      }
+    }
+  },
+  mounted() {
+    this.$axios.post('/system/getSingle').then((rsp) => {
+      if (rsp.code === 200) {
+        if (rsp.data.detail !== null) {
+          this.form = rsp.data.detail
+        }
+        this.isCreate = 1
+        this.formButtonName = '立即保存'
+      }
+    })
+  },
+  methods: {
+    // 表单操作
+    submitForm(formName) {
+      if (this.form.logoUrl === '') {
+        this.$message.warning('请上传logo')
+        return
+      }
+      if (this.form.title === '') {
+        this.$message.warning('请填写网站标题')
+        return
+      }
+      if (this.form.keywords === '') {
+        this.$message.warning('请填写网站关键词')
+        return
+      }
+      if (this.form.description === '') {
+        this.$message.warning('请填写网站描述')
+        return
+      }
+      if (this.form.footer === '') {
+        this.$message.warning('请填写网站底部信息')
+        return
+      }
+      if (this.form.pageGray === '') {
+        this.$message.warning('请填写页面颜色')
+        return
+      }
+
+      if (this.isCreate === 1) {
+        this.submit(true)
+      } else {
+        this.submit(false)
+      }
+    },
+    submit(isUpdate) {
+      const data = this.form
+      this.$axios({
+        method: 'post',
+        url: '/system/save',
+        data: data
+      }).then((rsp) => {
+        this.$message(rsp.message)
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    }
+  }
+}
+</script>
+
+<style>
+  .common-width {
+    width: 500px;
+  }
+</style>
