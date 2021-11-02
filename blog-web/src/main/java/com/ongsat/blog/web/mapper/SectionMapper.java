@@ -12,9 +12,9 @@ import java.util.List;
 public interface SectionMapper extends BaseMapper<SectionPO>, BaseTableName {
 
     @Select("select * from" + t_section_space + "order by create_at desc")
-    List<SectionPO> selectAll();
+    List<SectionPO> selectListByCreateAt();
 
     @Select("select * from" + t_section_space + "order by sort desc")
-    List<SectionPO> selectAllBySort();
+    List<SectionPO> selectListBySort();
 
 }

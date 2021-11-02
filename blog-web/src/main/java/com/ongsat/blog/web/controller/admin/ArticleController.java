@@ -1,10 +1,11 @@
 package com.ongsat.blog.web.controller.admin;
 
 import com.ongsat.blog.api.constant.ApiAuthConstant;
+import com.ongsat.blog.api.entity.vo.admin.article.ArticleCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.article.ArticleSearchParamVO;
+import com.ongsat.blog.api.entity.vo.admin.article.ArticleUpdateParamVO;
 import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.admin.ArticleDeleteParamVO;
-import com.ongsat.blog.api.entity.vo.admin.ArticleGetByPageParamVO;
-import com.ongsat.blog.api.entity.vo.admin.ArticleSaveParamVO;
+import com.ongsat.blog.api.entity.vo.admin.article.ArticleDeleteParamVO;
 import com.ongsat.blog.web.config.annotation.ApiAuth;
 import com.ongsat.blog.web.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,27 @@ public class ArticleController {
     private ArticleService articleService;
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getByPage")
-    public Response getByPage(@Valid @RequestBody ArticleGetByPageParamVO articleGetByPageParamVO, BindingResult bindingResult) {
-        return articleService.getByPage(articleGetByPageParamVO);
+    @PostMapping(value = "/search")
+    public Response search(@Valid @RequestBody ArticleSearchParamVO articleSearchParamVO, BindingResult bindingResult) {
+        return articleService.searchByAdminPlatform(articleSearchParamVO);
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/save")
-    public Response save(@Valid @RequestBody ArticleSaveParamVO articleSaveParamVO, BindingResult bindingResult) {
-        return articleService.save(articleSaveParamVO);
+    @PostMapping(value = "/queryCount")
+    public Response queryCount() {
+        return articleService.queryCount();
+    }
+
+    @ApiAuth(type = ApiAuthConstant.ADMIN)
+    @PostMapping(value = "/create")
+    public Response create(@Valid @RequestBody ArticleCreateParamVO articleCreateParamVO, BindingResult bindingResult) {
+        return articleService.create(articleCreateParamVO);
+    }
+
+    @ApiAuth(type = ApiAuthConstant.ADMIN)
+    @PostMapping(value = "/update")
+    public Response update(@Valid @RequestBody ArticleUpdateParamVO articleUpdateParamVO, BindingResult bindingResult) {
+        return articleService.update(articleUpdateParamVO);
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)

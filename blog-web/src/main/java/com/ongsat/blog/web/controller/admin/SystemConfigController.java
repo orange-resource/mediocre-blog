@@ -2,7 +2,7 @@ package com.ongsat.blog.web.controller.admin;
 
 import com.ongsat.blog.api.constant.ApiAuthConstant;
 import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.admin.SystemConfigSaveParamVO;
+import com.ongsat.blog.api.entity.vo.admin.systemconfig.SystemConfigSaveParamVO;
 import com.ongsat.blog.web.config.annotation.ApiAuth;
 import com.ongsat.blog.web.service.SystemConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,9 @@ public class SystemConfigController {
     private SystemConfigService systemConfigService;
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getSingle")
-    public Response getSingle() {
-        return systemConfigService.getSingle();
+    @PostMapping(value = "/get")
+    public Response get() {
+        return systemConfigService.getItemToRsp();
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)

@@ -38,25 +38,25 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/carousel',
+    path: '/banner',
     component: Layout,
     alwaysShow: true,
-    name: 'Carousel',
+    name: 'Banner',
     redirect: 'noredirect',
     meta: { title: '轮播图管理', icon: '轮播图' },
     children: [
       {
-        path: 'carousel_list',
-        name: 'CarouselList',
-        component: () => import('@/views/carousel/carousel_list'),
-        meta: { title: '轮播图管理', icon: '轮播图' }
+        path: 'banner_list',
+        name: 'BannerList',
+        component: () => import('@/views/banner/banner_list'),
+        meta: { title: '首页轮播图', icon: '轮播图' }
       },
       {
-        path: 'carousel_form',
-        name: 'CarouselForm',
+        path: 'banner_form',
+        name: 'BannerForm',
         hidden: true,
-        component: () => import('@/views/carousel/carousel_form'),
-        meta: { title: '轮播图操作', icon: '轮播图' }
+        component: () => import('@/views/banner/banner_form'),
+        meta: { title: '首页轮播图操作', icon: '轮播图' }
       }
     ]
   },
@@ -170,6 +170,12 @@ export const constantRouterMap = [
         name: 'SystemConfig',
         component: () => import('@/views/config/system_config'),
         meta: { title: '系统配置', icon: '配置' }
+      },
+      {
+        path: 'oss_config',
+        name: 'OssConfig',
+        component: () => import('@/views/config/oss_config'),
+        meta: { title: 'OSS配置', icon: '配置' }
       }
     ]
   },

@@ -31,10 +31,10 @@
             label-width="120px"
             class="demo-ruleForm">
 
-            <el-form-item label="顶级分类选择">
+            <el-form-item label="一级分类选择">
               <el-select
                 v-model="form.categoryId"
-                placeholder="请选择顶级分类"
+                placeholder="请选择一级分类"
                 @change="categoryInput">
                 <el-option
                   v-for="item in categoryList"
@@ -44,10 +44,10 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item v-if="childrenCategoryList.length > 0" label="下级分类选择">
+            <el-form-item v-if="childrenCategoryList.length > 0" label="二级分类选择">
               <el-select
-                v-model="form.secondaryCategoryId"
-                placeholder="请选择下级分类"
+                v-model="form.categoryChildId"
+                placeholder="请选择二级分类"
                 @change="categoryInput">
                 <el-option
                   v-for="item in childrenCategoryList"
@@ -58,7 +58,11 @@
             </el-form-item>
 
             <el-form-item label="主图" required>
-              <single-upload-image :url.sync="form.mainImgUrl"/>
+              <single-upload-image :url.sync="form.masterImageUrl"/>
+            </el-form-item>
+
+            <el-form-item label="URI" required>
+              <el-input v-model="form.uri" class="common-width" maxlength="50" show-word-limit/>
             </el-form-item>
 
             <el-form-item label="文章标题" required>
@@ -72,15 +76,6 @@
                 type="textarea"
                 class="common-width"
                 maxlength="300"
-                show-word-limit/>
-            </el-form-item>
-
-            <el-form-item label="文章副内容">
-              <el-input
-                v-model="form.childContentHtml"
-                :autosize="{ minRows: 4, maxRows: 5}"
-                type="textarea"
-                class="common-width"
                 show-word-limit/>
             </el-form-item>
 
@@ -142,14 +137,15 @@ export default {
         isRecommend: 2,
         contentHtml: '',
         categoryId: '',
-        secondaryCategoryId: '',
-        mainImgUrl: ''
+        categoryChildId: '',
+        masterImageUrl: '',
+        uri: ''
       }
 
     }
   },
   mounted() {
-    this.$axios.post('/category/getAll').then((rsp) => {
+    this.$axios.post('/category/queryAll').then((rsp) => {
       const list = rsp.data.list
       const categoryTree = []
       list.forEach((item) => {
@@ -172,7 +168,6 @@ export default {
         this.form = this.$route.params.row
         delete this.form.createAt
         delete this.form.updateAt
-        delete this.form.pv
         for (let i = 0; i < this.categoryList.length; i++) {
           if (this.categoryList[i].value === this.form.categoryId) {
             this.childrenCategoryList = []
@@ -202,12 +197,12 @@ export default {
       for (let i = 0; i < this.categoryList.length; i++) {
         if (this.categoryList[i].value === categoryId) {
           this.childrenCategoryList = []
-          this.form.secondaryCategoryId = ''
+          this.form.categoryChildId = ''
 
           if (this.categoryList[i].children.length > 0) {
             for (let p = 0; p < this.categoryList[i].children.length; p++) {
               if (p === 0) {
-                this.form.secondaryCategoryId = this.categoryList[i].children[p].id
+                this.form.categoryChildId = this.categoryList[i].children[p].id
               }
               this.childrenCategoryList.push({
                 label: this.categoryList[i].children[p].name,
@@ -220,6 +215,10 @@ export default {
     },
     // 表单操作
     submitForm(formName) {
+      if (this.form.uri === '') {
+        this.$message.warning('请填写URI(唯一资源标识符)')
+        return
+      }
       if (this.form.title === '') {
         this.$message.warning('请填写文章标题')
         return
@@ -229,14 +228,14 @@ export default {
         return
       }
       if (this.form.categoryId === '') {
-        this.$message.warning('请选择主分类')
+        this.$message.warning('请选择一级分类')
         return
       }
       if (this.form.description === '') {
         this.$message.warning('请填写内容简介')
         return
       }
-      if (this.form.mainImgUrl === '') {
+      if (this.form.masterImageUrl === '') {
         this.$message.warning('请上传主图')
         return
       }
@@ -249,10 +248,16 @@ export default {
     },
     submit(isUpdate) {
       const data = this.form
+      let url = ''
+      if (isUpdate) {
+        url = '/article/update'
+      } else {
+        url = '/article/create'
+      }
 
       this.$axios({
         method: 'post',
-        url: '/article/save',
+        url: url,
         data: data
       }).then((rsp) => {
         this.$message(rsp.message)

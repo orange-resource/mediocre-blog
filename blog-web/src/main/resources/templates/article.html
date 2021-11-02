@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" th:style="'filter: grayscale(' + ${config.pageGray} + ')'">
+<html lang="zh-CN" th:style="'filter: grayscale(' + ${config.pageGrayMode} + ')'">
 <head>
 
     <link rel="icon" type="image/x-icon" th:href="${config.logoUrl}"/>
@@ -13,9 +13,9 @@
         文章不存在 - [[${config.title}]]
     </title>
 
-    <meta name="keywords" th:content="${config.keywords}">
+    <meta name="keywords" th:content="${config.seoKeywords}">
     <meta th:if="${article.content} != null" name="description" th:content="${article.content.description}">
-    <meta th:if="${article.content} == null" name="description" th:content="${config.description}">
+    <meta th:if="${article.content} == null" name="description" th:content="${config.seoDescription}">
 
     <div th:include="common::header"></div>
 
@@ -25,7 +25,7 @@
     <div class="header-content container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand" href="index">
-                <img th:src="@{/img-cus/logo.png}" width="140" height="65" alt="">
+                <img th:src="${config.bigLogoUrl}" width="140" height="65" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,7 @@
                         <a class="nav-link" th:href="@{/index}">首页</a>
                     </li>
                     <li class="nav-item el-nav-item" th:classappend="${type} == 0 ? 'active' : ''">
-                        <a class="nav-link" th:href="@{/news}">最新发布</a>
+                        <a class="nav-link" th:href="@{/all}">最新发布</a>
                     </li>
                     <li th:each="item: ${category}"
                         class="nav-item el-nav-item"
@@ -69,14 +69,6 @@
         <div class="col-md-8 cl-left">
             <div th:if="${article.content} != null" class="cl-artical-content">
                 <h3 class="cl-artical-title" th:text="${article.content.title}"></h3>
-                <div th:if="${article.content.childContentHtml != null}" class="cl-card-tag"
-                     style="display: flex; justify-content: center; margin-top: 16px; margin-bottom: 10px">
-                    <div class="download-chunk">
-                        <a href="#download" class="download-btn" style="color: #fff">
-                            点击下载
-                        </a>
-                    </div>
-                </div>
 
                 <div class="cl-artical" th:utext="${article.content.contentHtml}">
                 </div>
@@ -105,7 +97,7 @@
                 <div class="right-card-main">
                     <div class="right-card-title">最新发布</div>
                     <ul class="right-recommended-list">
-                        <li th:each="item : ${articleNews}">
+                        <li th:each="item : ${latestArticle}">
                             <a class="news-title" th:href="'/article/' + ${item.uri}" target="_blank">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                                 [[${item.title}]]
@@ -119,7 +111,7 @@
                 <div class="right-card-main">
                     <div class="right-card-title" th:text="${item.title}"></div>
                     <div class="cl-code">
-                        <img th:src="${item.mainImgUrl}" class="img-fluid img-radius" alt="">
+                        <img th:src="${item.masterImageUrl}" class="img-fluid img-radius" alt="">
                         <p th:text="${item.description}"></p>
                     </div>
                 </div>

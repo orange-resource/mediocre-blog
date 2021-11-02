@@ -82,7 +82,7 @@ public class ApiAuthInterceptor implements HandlerInterceptor {
         if (!StrUtil.isBlank(token)) {
             Boolean hasKey = redisTemplate.hasKey(RedisConstant.TOKEN + token);
             if (null == hasKey || !hasKey) {
-                toJson(response, Response.build(RspCode.LOGIN_EXPIRED));
+                toJson(response, Response.build(RspCode.LOGIN_EXPIRED_WARN));
                 return false;
             }
         } else {

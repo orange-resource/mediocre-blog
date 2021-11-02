@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" th:style="'filter: grayscale(' + ${config.pageGray} + ')'">
+<html lang="zh-CN" th:style="'filter: grayscale(' + ${config.pageGrayMode} + ')'">
 <head>
 
     <link rel="icon" type="image/x-icon" th:href="${config.logoUrl}"/>
@@ -13,8 +13,8 @@
         [[${categoryName}]] - [[${config.title}]]
     </title>
 
-    <meta name="keywords" th:content="${config.keywords}">
-    <meta name="description" th:content="${config.description}">
+    <meta name="keywords" th:content="${config.seoKeywords}">
+    <meta name="description" th:content="${config.seoDescription}">
 
     <div th:include="common::header"></div>
 
@@ -24,7 +24,7 @@
     <div class="header-content container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand" href="index">
-                <img th:src="@{/img-cus/logo.png}" width="140" height="65" alt="">
+                <img th:src="${config.bigLogoUrl}" width="140" height="65" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
                         <a class="nav-link" th:href="@{/index}">首页</a>
                     </li>
                     <li class="nav-item el-nav-item" th:classappend="${type} == 0 ? 'active' : ''">
-                        <a class="nav-link" th:href="@{/news}">最新发布</a>
+                        <a class="nav-link" th:href="@{/all}">最新发布</a>
                     </li>
                     <li th:each="item: ${category}"
                         class="nav-item el-nav-item"
@@ -67,10 +67,10 @@
     <div class="row">
         <div class="col-md-8 cl-left">
 
-            <div th:if="${listTotal} != 0" th:each="item : ${list}" class="cl-card">
+            <div th:if="${list.size()} != 0" th:each="item : ${list}" class="cl-card">
                 <div class="row">
                     <div class="col-lg-3 col-md-4 col-sm-12 cl-card-image">
-                        <img th:data-original="${item.mainImgUrl}" class="lazy img-fluid" alt="">
+                        <img th:data-original="${item.masterImageUrl}" class="lazy img-fluid" alt="">
                     </div>
                     <div class="col-lg-9 col-md-8 col-sm-12 cl-card-main">
                         <div>
@@ -85,15 +85,15 @@
                 </div>
             </div>
 
-            <div th:if="${listTotal} == 0" class="data-none-box">
+            <div th:if="${list.size()} == 0" class="data-none-box">
                 <span th:if="${type} != 2">没有相关文章数据哟...</span>
                 <span th:if="${type} == 2">橘子在后台没有搜索了一番，没有相关的数据哟...</span>
             </div>
 
-            <span th:if="${listTotal} != 0" class="badge badge-warning">
+            <span th:if="${list.size()} != 0" class="badge badge-warning">
                 总共页数: [[${pages}]]
             </span>
-            <div th:if="${listTotal} != 0" style="display: flex;justify-content: center">
+            <div th:if="${list.size()} != 0" style="display: flex;justify-content: center">
                 <nav aria-label="Page navigation">
                     <ul class="pagination" id="pagination"></ul>
                 </nav>
@@ -118,7 +118,7 @@
                 <div class="right-card-main">
                     <div class="right-card-title">最新发布</div>
                     <ul class="right-recommended-list">
-                        <li th:each="item : ${articleNews}">
+                        <li th:each="item : ${latestArticle}">
                             <a class="news-title" th:href="'/article/' + ${item.uri}" target="_blank">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                                 [[${item.title}]]
@@ -132,7 +132,7 @@
                 <div class="right-card-main">
                     <div class="right-card-title" th:text="${item.title}"></div>
                     <div class="cl-code">
-                        <img th:src="${item.mainImgUrl}" class="img-fluid img-radius" alt="">
+                        <img th:src="${item.masterImageUrl}" class="img-fluid img-radius" alt="">
                         <p th:text="${item.description}"></p>
                     </div>
                 </div>

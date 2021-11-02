@@ -15,8 +15,6 @@ public class Response<T> implements Serializable {
 
     private T data;
 
-    private Long interval;
-
     private Response() {}
 
     private Response(RspCode rspCode) {

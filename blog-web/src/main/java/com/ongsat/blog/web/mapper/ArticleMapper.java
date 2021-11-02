@@ -19,37 +19,37 @@ public interface ArticleMapper extends BaseMapper<ArticlePO>, BaseTableName {
             "<where>" +
             "<if test=\"title != null and title != ''\"> and title like concat('%', #{title}, '%') </if>" +
             "<if test=\"categoryId != null and categoryId != ''\"> or category_id = #{categoryId} </if>" +
-            "<if test=\"secondaryCategoryId != null and secondaryCategoryId != ''\"> or secondary_category_id = #{secondaryCategoryId} </if>" +
+            "<if test=\"categoryChildId != null and categoryChildId != ''\"> or category_child_id = #{categoryChildId} </if>" +
             "</where>" +
             "order by create_at desc " +
             "</script>")
-    List<ArticlePO> selectByPage(
+    List<ArticlePO> selectListByAdminPlatformAndPage(
             @Param("title") String title,
             @Param("categoryId") String categoryId,
-            @Param("secondaryCategoryId") String secondaryCategoryId,
+            @Param("categoryChildId") String categoryChildId,
             Page page
     );
 
     @Select("select * from" + t_article_space + "where is_show = 1 order by create_at desc limit 0,5")
-    List<ArticlePO> selectByNews();
+    List<ArticlePO> selectListByLatestAndLimit();
 
     @Select("select * from" + t_article_space + "where is_show = 1 and is_recommend = 1 order by create_at desc")
-    List<ArticlePO> selectByRecommend();
+    List<ArticlePO> selectListByRecommend();
 
     @Select("select * from" + t_article_space + "where is_show = 1 and uri = #{uri}")
     ArticlePO selectByUri(@Param("uri") String uri);
 
     @Select("select * from" + t_article_space + "where is_show = 1 order by create_at desc")
-    List<ArticlePO> selectNews(Page page);
+    List<ArticlePO> selectListByPage(Page page);
 
     @Select("select * from" + t_article_space +
-            "where is_show = 1 and (category_id = #{categoryUri} or secondary_category_id = #{categoryUri}) order by create_at desc")
-    List<ArticlePO> selectByCategory(@Param("categoryUri") String categoryUri, Page page);
+            "where is_show = 1 and (category_id = #{categoryId} or category_child_id = #{categoryId}) order by create_at desc")
+    List<ArticlePO> selectByCategoryId(@Param("categoryId") String categoryId, Page page);
 
     @Select("select * from" + t_article_space +
             "where is_show = 1 and " +
-            "(title like concat('%', #{searchText}, '%') or description like concat('%', #{searchText}, '%')) " +
+            "(title like concat('%', #{keyword}, '%') or description like concat('%', #{keyword}, '%')) " +
             "order by create_at desc")
-    List<ArticlePO> search(@Param("searchText") String searchText, Page page);
+    List<ArticlePO> selectListByOpenApiPlatformAndPage(@Param("keyword") String keyword, Page page);
 
 }

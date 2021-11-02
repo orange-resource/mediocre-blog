@@ -32,7 +32,7 @@
             <el-form-item label="分类选择">
               <el-select
                 v-model="seachForm.categoryId"
-                placeholder="请选择顶级分类"
+                placeholder="请选择分类"
                 clearable>
                 <el-option
                   v-for="item in categoryList"
@@ -90,10 +90,6 @@
                 <br>
                 <div v-html="props.row.description"/>
                 <br><br><br>
-                <span>文章副内容</span>
-                <br>
-                <div v-html="props.row.childContentHtml"/>
-                <br><br><br>
                 <span>文章内容：</span>
                 <br>
                 <div v-html="props.row.contentHtml"/>
@@ -110,23 +106,23 @@
               align="center"
             />
             <el-table-column
-              prop="mainImgUrl"
+              prop="masterImageUrl"
               align="center"
               label="主图"
             >
               <template slot-scope="scope">
-                <img :src="scope.row.mainImgUrl" class="openImage" height="100px" >
+                <img :src="scope.row.masterImageUrl" class="openImage" height="100px" width="100px" >
               </template>
             </el-table-column>
+            <el-table-column
+              prop="uri"
+              align="center"
+              label="URI"
+            />
             <el-table-column
               prop="title"
               align="center"
               label="标题"
-            />
-            <el-table-column
-              prop="pv"
-              align="center"
-              label="pv"
             />
             <el-table-column
               prop="isShow"
@@ -185,7 +181,6 @@
 </template>
 
 <script>
-const time = require('@/utils/time.js')
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'viewerjs'
 export default {
@@ -212,7 +207,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.post('/category/getAll').then((rsp) => {
+    this.$axios.post('/category/queryAll').then((rsp) => {
       rsp.data.list.forEach((item) => {
         item.label = item.name
         item.value = item.id
@@ -235,12 +230,8 @@ export default {
       data.offset = this.tablePageNum
       data.limit = this.tablePageSize
 
-      this.$axios.post('/article/getByPage', data).then((rsp) => {
+      this.$axios.post('/article/search', data).then((rsp) => {
         this.tableTotal = rsp.data.total
-        for (let i = 0; i < rsp.data.list.length; i++) {
-          rsp.data.list[i].createAt = time.timeStampDateSpecial({ time: rsp.data.list[i].createAt })
-          rsp.data.list[i].updateAt = time.timeStampDateSpecial({ time: rsp.data.list[i].updateAt })
-        }
         this.tableData = rsp.data.list
         this.openImage()
       })

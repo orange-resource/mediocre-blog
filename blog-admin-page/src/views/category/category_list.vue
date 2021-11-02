@@ -133,7 +133,6 @@
 </template>
 
 <script>
-const time = require('@/utils/time.js')
 export default {
   data() {
     return {
@@ -171,13 +170,7 @@ export default {
       // data.current = this.tablePageNum
       // data.size = this.tablePageSize
 
-      this.$axios.post('/category/getAll').then((rsp) => {
-        // this.tableTotal = rsp.data.total
-        for (let i = 0; i < rsp.data.list.length; i++) {
-          rsp.data.list[i].createAt = time.timeStampDateSpecial({ time: rsp.data.list[i].createAt })
-          rsp.data.list[i].updateAt = time.timeStampDateSpecial({ time: rsp.data.list[i].updateAt })
-        }
-
+      this.$axios.post('/category/queryAll').then((rsp) => {
         const list = rsp.data.list
         const categoryTree = []
         list.forEach((item) => {
@@ -216,7 +209,30 @@ export default {
       this.openForm({ id: null, pid: row.id })
     },
     updateRow(row) {
-      this.openForm({ id: row.id, row: row })
+      const childInfo = {
+        isChild: false,
+        parentName: ''
+      }
+      let isBreak = false
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (isBreak) {
+          break
+        }
+        const parent = this.tableData[i]
+        if (parent.children.length === 0) {
+          continue
+        }
+        for (let c = 0; c < parent.children.length; c++) {
+          const child = parent.children[c]
+          if (child.id === row.id) {
+            childInfo.isChild = true
+            childInfo.parentName = parent.name
+            isBreak = true
+            break
+          }
+        }
+      }
+      this.openForm({ id: row.id, row: row, childInfo: childInfo })
     },
     removeRow(row) {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {

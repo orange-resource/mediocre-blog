@@ -4,9 +4,10 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import com.ongsat.blog.api.constant.RedisConstant;
 import com.ongsat.blog.api.response.ResultBuilder;
 import com.ongsat.blog.api.entity.po.*;
-import com.ongsat.blog.api.entity.vo.api.CategoryTreeVO;
+import com.ongsat.blog.api.entity.vo.api.category.CategoryTreeVO;
 import com.ongsat.blog.web.common.convert.ConvertObject;
 import com.ongsat.blog.web.mapper.*;
+import com.ongsat.blog.web.service.SystemConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,7 +33,7 @@ public class SyncDataScheduler {
     private ConvertObject convertObject;
 
     @Autowired
-    private SystemConfigMapper systemConfigMapper;
+    private SystemConfigService systemConfigService;
 
     @Autowired
     private BlogrollMapper blogrollMapper;
@@ -49,35 +50,32 @@ public class SyncDataScheduler {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    /**
-     * 每隔10秒执行一次
-     */
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 3000)
     public void execute() {
         try {
-            SystemConfigPO systemConfigPO = systemConfigMapper.getSingle();
+            SystemConfigPO systemConfigPO = systemConfigService.getItem();
 
-            List<BlogrollPO> blogrollPOList = blogrollMapper.selectBySort();
+            List<BlogrollPO> blogrollPOList = blogrollMapper.selectListBySort();
 
-            List<SectionPO> sectionPOList = sectionMapper.selectAllBySort();
+            List<SectionPO> sectionPOList = sectionMapper.selectListBySort();
 
-            List<BannerPO> bannerPOList = bannerMapper.selectAllBySort();
+            List<BannerPO> bannerPOList = bannerMapper.selectListBySort();
 
-            List<ArticlePO> articlePOList = articleMapper.selectByNews();
+            List<ArticlePO> latestArticleList = articleMapper.selectListByLatestAndLimit();
 
-            List<ArticlePO> articleRecommendList = articleMapper.selectByRecommend();
+            List<ArticlePO> recommendArticleList = articleMapper.selectListByRecommend();
 
-            List<CategoryTreeVO> categoryTreeVOList = categoryMapper.selectCategoryTreeVO();
-            intensify(categoryTreeVOList);
+            List<CategoryTreeVO> categoryTreeList = categoryMapper.selectCategoryTree();
+            intensify(categoryTreeList);
 
             Map<String, Object> build = new ResultBuilder()
                     .set("config", systemConfigPO)
                     .set("blogroll", blogrollPOList)
                     .set("section", sectionPOList)
                     .set("banner", bannerPOList)
-                    .set("articleNews", articlePOList)
-                    .set("articleRecommend", articleRecommendList)
-                    .set("category", categoryTreeVOList)
+                    .set("latestArticle", latestArticleList)
+                    .set("recommendArticle", recommendArticleList)
+                    .set("category", categoryTreeList)
                     .build();
             redisTemplate.opsForValue().set(RedisConstant.COMMON_PAGE_DATA, build);
         } catch (Throwable e) {

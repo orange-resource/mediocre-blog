@@ -12,10 +12,7 @@ import java.io.Serializable;
 public class AliyunOssPO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     * scheme_name
-     */
+    @TableId(value = "scheme_name", type = IdType.NONE)
     private String schemeName;
 
     /**

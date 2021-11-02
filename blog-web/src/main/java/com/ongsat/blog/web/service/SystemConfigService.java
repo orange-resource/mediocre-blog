@@ -1,12 +1,12 @@
 package com.ongsat.blog.web.service;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ongsat.blog.api.constant.SchemeNameConstant;
 import com.ongsat.blog.api.response.Response;
 import com.ongsat.blog.api.response.ResultBuilder;
 import com.ongsat.blog.api.response.RspCode;
 import com.ongsat.blog.api.entity.po.SystemConfigPO;
-import com.ongsat.blog.api.entity.vo.admin.SystemConfigSaveParamVO;
+import com.ongsat.blog.api.entity.vo.admin.systemconfig.SystemConfigSaveParamVO;
 import com.ongsat.blog.web.common.convert.ConvertObject;
 import com.ongsat.blog.web.mapper.SystemConfigMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,12 @@ public class SystemConfigService extends ServiceImpl<SystemConfigMapper, SystemC
     @Autowired
     private ConvertObject convertObject;
 
-    public Response getSingle() {
-        SystemConfigPO systemConfigPO = super.baseMapper.getSingle();
+    public SystemConfigPO getItem() {
+        return super.baseMapper.selectBySchemeName(SchemeNameConstant.DEFAULT);
+    }
+
+    public Response getItemToRsp() {
+        SystemConfigPO systemConfigPO = super.baseMapper.selectBySchemeName(SchemeNameConstant.DEFAULT);
         Map<String, Object> build = new ResultBuilder()
                 .setDetail(systemConfigPO)
                 .build();
@@ -29,14 +33,13 @@ public class SystemConfigService extends ServiceImpl<SystemConfigMapper, SystemC
     }
 
     public synchronized Response save(SystemConfigSaveParamVO systemConfigSaveParamVO) {
-        if (StrUtil.isBlank(systemConfigSaveParamVO.getId())) {
-            int count = super.baseMapper.selectCount();
-            if (count > 0) return Response.build(RspCode.REPEAT_ITEM);
-        }
         SystemConfigPO systemConfigPO = convertObject.toSystemConfigPO(systemConfigSaveParamVO);
+        systemConfigPO.setSchemeName(SchemeNameConstant.DEFAULT);
 
         boolean update = super.saveOrUpdate(systemConfigPO);
-        if (update) return Response.success();
+        if (update) {
+            return Response.success();
+        }
         return Response.error();
     }
 

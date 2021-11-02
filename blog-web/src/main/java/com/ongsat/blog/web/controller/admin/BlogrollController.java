@@ -1,11 +1,11 @@
 package com.ongsat.blog.web.controller.admin;
 
 import com.ongsat.blog.api.constant.ApiAuthConstant;
+import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollSearchParamVO;
 import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.admin.BlogrollCreateParamVO;
-import com.ongsat.blog.api.entity.vo.admin.BlogrollDeleteParamVO;
-import com.ongsat.blog.api.entity.vo.admin.BlogrollGetByPageParamVO;
-import com.ongsat.blog.api.entity.vo.admin.BlogrollUpdateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollDeleteParamVO;
+import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollUpdateParamVO;
 import com.ongsat.blog.web.config.annotation.ApiAuth;
 import com.ongsat.blog.web.service.BlogrollService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,9 @@ public class BlogrollController {
     private BlogrollService blogrollService;
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getByPage")
-    public Response getByPage(@Valid @RequestBody BlogrollGetByPageParamVO blogrollGetByPageParamVO, BindingResult bindingResult) {
-        return blogrollService.getByPage(blogrollGetByPageParamVO);
+    @PostMapping(value = "/search")
+    public Response search(@Valid @RequestBody BlogrollSearchParamVO blogrollSearchParamVO, BindingResult bindingResult) {
+        return blogrollService.search(blogrollSearchParamVO);
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)

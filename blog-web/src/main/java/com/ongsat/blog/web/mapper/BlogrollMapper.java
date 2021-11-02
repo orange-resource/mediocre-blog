@@ -13,9 +13,9 @@ import java.util.List;
 public interface BlogrollMapper extends BaseMapper<BlogrollPO>, BaseTableName {
 
     @Select("select * from" + t_blogroll_space + "order by create_at desc")
-    List<BlogrollPO> selectByPage(Page page);
+    List<BlogrollPO> selectListByPage(Page page);
 
     @Select("select * from" + t_blogroll_space + "order by sort desc")
-    List<BlogrollPO> selectBySort();
+    List<BlogrollPO> selectListBySort();
 
 }

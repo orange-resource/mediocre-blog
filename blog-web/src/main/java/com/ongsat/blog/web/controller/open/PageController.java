@@ -1,12 +1,6 @@
 package com.ongsat.blog.web.controller.open;
 
 import com.ongsat.blog.api.constant.RedisConstant;
-import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.api.ArticleGetByCategoryParamVO;
-import com.ongsat.blog.api.entity.vo.api.ArticleGetNewsParamVO;
-import com.ongsat.blog.api.entity.vo.api.ArticleGetSingleByShowPageParamVO;
-import com.ongsat.blog.api.entity.vo.api.ArticleSearchParamVO;
-import com.ongsat.blog.web.common.util.IpUtil;
 import com.ongsat.blog.web.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -36,86 +28,57 @@ public class PageController {
         return (Map)deserialize;
     }
 
-    private ModelAndView createPage(String viewName) {
+    private ModelAndView createCommonModelView(String viewName) {
         ModelAndView modelAndView = new ModelAndView(viewName);
-//        modelAndView.addObject("backgroundGray", backgroundGray);
+        modelAndView.addAllObjects(this.getCommon());
         return modelAndView;
     }
 
     @GetMapping(value = {"/", "index", "home", "main"})
     public ModelAndView home() {
-        ModelAndView home = this.createPage("home");
-        home.addAllObjects(this.getCommon());
+        ModelAndView home = this.createCommonModelView("home");
         return home;
     }
 
-    @GetMapping(value = "/news")
-    public ModelAndView news(Integer page) {
-        ArticleGetNewsParamVO articleGetNewsParamVO = new ArticleGetNewsParamVO();
-        articleGetNewsParamVO.setOffset(null == page ? 1 : page);
-        Response news = articleService.getNews(articleGetNewsParamVO);
+    @GetMapping(value = "/all")
+    public ModelAndView queryAllArticle(Integer page) {
+        Map<String, Object> all = articleService.queryAllArticleToMap(null == page ? 1 : page);
 
-        ModelAndView modelAndView = this.createPage("list");
+        ModelAndView modelAndView = this.createCommonModelView("list");
 
-        modelAndView.addAllObjects(this.getCommon());
-        modelAndView.addAllObjects((Map<String, Object>) news.getData());
+        modelAndView.addAllObjects(all);
         modelAndView.addObject("type", 0);
         return modelAndView;
     }
 
     @GetMapping(value = "/category/{categoryId}")
-    public ModelAndView category(@PathVariable String categoryId, Integer page) {
-        ArticleGetByCategoryParamVO articleGetByCategoryParamVO = new ArticleGetByCategoryParamVO();
-        articleGetByCategoryParamVO.setOffset(null == page ? 1 : page);
-        articleGetByCategoryParamVO.setCategoryUri(categoryId);
-        Response category = articleService.getByCategory(articleGetByCategoryParamVO);
+    public ModelAndView queryArticleByCategory(@PathVariable String categoryId, Integer page) {
+        Map<String, Object> articleByCategory = articleService.queryArticleByCategoryToMap(categoryId, null == page ? 1 : page);
 
-        ModelAndView modelAndView = this.createPage("list");
-        modelAndView.addAllObjects(this.getCommon());
-        modelAndView.addAllObjects((Map<String, Object>) category.getData());
+        ModelAndView modelAndView = this.createCommonModelView("list");
+        modelAndView.addAllObjects(articleByCategory);
         modelAndView.addObject("type", 1);
         return modelAndView;
     }
 
     @GetMapping(value = "/search/{keyword}")
     public ModelAndView search(@PathVariable String keyword, Integer page) {
-        ArticleSearchParamVO articleSearchParamVO = new ArticleSearchParamVO();
-        articleSearchParamVO.setOffset(null == page ? 1 : page);
-        articleSearchParamVO.setSearchText(keyword);
-        Response search = articleService.search(articleSearchParamVO);
+        Map<String, Object> articleBySearch = articleService.searchByOpenApiPlatformToMap(keyword, null == page ? 1 : page);
 
-        ModelAndView modelAndView = this.createPage("list");
-        modelAndView.addAllObjects(this.getCommon());
-        modelAndView.addAllObjects((Map<String, Object>) search.getData());
+        ModelAndView modelAndView = this.createCommonModelView("list");
+        modelAndView.addAllObjects(articleBySearch);
         modelAndView.addObject("type", 2);
         modelAndView.addObject("keyword", keyword);
         return modelAndView;
     }
 
-    @GetMapping(value = "/article/{articleId}")
-    public ModelAndView article(@PathVariable String articleId,
-                                HttpServletRequest httpServletRequest) {
+    @GetMapping(value = "/article/{articleUri}")
+    public ModelAndView queryArticle(@PathVariable String articleUri) {
+        Map<String, Object> article = articleService.queryArticleToMap(articleUri);
 
-        String ip = IpUtil.getIpAddress(httpServletRequest);
-        Cookie[] cookies = httpServletRequest.getCookies();
-        String codeToken = "";
-        if (null != cookies) {
-            for (Cookie cookie : cookies) {
-                String name = cookie.getName();
-                if ("codeToken".equals(name)) {
-                    codeToken = cookie.getValue();
-                    continue;
-                }
-            }
-        }
-        ArticleGetSingleByShowPageParamVO articleGetSingleByShowPageParamVO = new ArticleGetSingleByShowPageParamVO();
-        articleGetSingleByShowPageParamVO.setUri(articleId);
-        Response response = articleService.getSingleByShowPage(articleGetSingleByShowPageParamVO, codeToken, ip);
-
-        ModelAndView modelAndView = this.createPage("article");
-        modelAndView.addAllObjects(this.getCommon());
-        modelAndView.addObject("article", response.getData());
-        modelAndView.addObject("uri", articleId);
+        ModelAndView modelAndView = this.createCommonModelView("article");
+        modelAndView.addObject("article", article);
+        modelAndView.addObject("uri", articleUri);
         return modelAndView;
     }
 

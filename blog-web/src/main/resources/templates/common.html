@@ -7,6 +7,8 @@
 
     <link th:href="@{/notify-cus/css/notify.css}" rel="stylesheet" >
     <link th:href="@{/notify-cus/css/prettify.css}" rel="stylesheet" >
+
+    <div thk:html="${config.commonHeadHtml}"></div>
 </div>
 
 <div th:fragment="home-footer">
@@ -14,6 +16,8 @@
     <script src="http://jscdn.ongsat.com/bootstrap/4.1.3/dist/js/bootstrap.min.js"></script>
     <script th:src="@{/notify-cus/js/notify.js}"></script>
     <script th:src="@{/notify-cus/js/prettify.js}"></script>
+
+    <div thk:html="${config.commonFooterHtml}"></div>
 </div>
 
 <div th:fragment="footer">
@@ -29,4 +33,6 @@
         hljs.initHighlightingOnLoad();
         $(".lazy").lazyload();
     </script>
+
+    <div thk:html="${config.commonFooterHtml}"></div>
 </div>

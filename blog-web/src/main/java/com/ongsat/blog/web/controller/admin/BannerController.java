@@ -1,9 +1,9 @@
 package com.ongsat.blog.web.controller.admin;
 
 import com.ongsat.blog.api.constant.ApiAuthConstant;
+import com.ongsat.blog.api.entity.vo.admin.banner.BannerDeleteParamVO;
+import com.ongsat.blog.api.entity.vo.admin.banner.BannerSaveParamVO;
 import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.admin.carousel.CarouselDeleteParamVO;
-import com.ongsat.blog.api.entity.vo.admin.carousel.CarouselSaveParamVO;
 import com.ongsat.blog.web.config.annotation.ApiAuth;
 import com.ongsat.blog.web.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +25,21 @@ public class BannerController {
     private BannerService bannerService;
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getAll")
-    public Response getAll() {
-        return bannerService.getAll();
+    @PostMapping(value = "/queryAll")
+    public Response queryAll() {
+        return bannerService.queryAll();
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
     @PostMapping(value = "/save")
-    public Response save(@Valid @RequestBody CarouselSaveParamVO carouselSaveParamVO, BindingResult bindingResult) {
-        return bannerService.save(carouselSaveParamVO);
+    public Response save(@Valid @RequestBody BannerSaveParamVO bannerSaveParamVO, BindingResult bindingResult) {
+        return bannerService.save(bannerSaveParamVO);
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
     @PostMapping(value = "/delete")
-    public Response delete(@Valid @RequestBody CarouselDeleteParamVO carouselDeleteParamVO, BindingResult bindingResult) {
-        return bannerService.delete(carouselDeleteParamVO);
+    public Response delete(@Valid @RequestBody BannerDeleteParamVO bannerDeleteParamVO, BindingResult bindingResult) {
+        return bannerService.delete(bannerDeleteParamVO);
     }
 
 }

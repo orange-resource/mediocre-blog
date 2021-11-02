@@ -1,11 +1,11 @@
 package com.ongsat.blog.web.controller.admin;
 
 import com.ongsat.blog.api.constant.ApiAuthConstant;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryQueryChildListParamVO;
 import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.admin.CategoryCreateParamVO;
-import com.ongsat.blog.api.entity.vo.admin.CategoryDeleteParamVO;
-import com.ongsat.blog.api.entity.vo.admin.CategoryUpdateParamVO;
-import com.ongsat.blog.api.entity.vo.admin.category.CategoryGetChildParamVO;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryDeleteParamVO;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryUpdateParamVO;
 import com.ongsat.blog.web.config.annotation.ApiAuth;
 import com.ongsat.blog.web.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +27,21 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getAll")
-    public Response getAll() {
-        return categoryService.getAll();
+    @PostMapping(value = "/queryAll")
+    public Response queryAll() {
+        return categoryService.queryAll();
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getTopList")
+    @PostMapping(value = "/queryOneLevelList")
     public Response getTopList() {
-        return categoryService.getTopList();
+        return categoryService.queryOneLevelList();
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getChild")
-    public Response getChild(@Valid @RequestBody CategoryGetChildParamVO categoryGetChildParamVO, BindingResult bindingResult) {
-        return categoryService.getChild(categoryGetChildParamVO);
+    @PostMapping(value = "/queryChildList")
+    public Response queryChildList(@Valid @RequestBody CategoryQueryChildListParamVO categoryQueryChildListParamVO, BindingResult bindingResult) {
+        return categoryService.queryChildList(categoryQueryChildListParamVO);
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)

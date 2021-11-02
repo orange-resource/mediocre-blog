@@ -12,10 +12,6 @@
         <i class="el-icon-plus"/>
       </el-upload>
     </upload-image-list>
-    <div style="display: flex;flex-direction: row">
-      <el-checkbox v-model="isCompress">压缩</el-checkbox>
-      <el-checkbox v-model="isAddWatermark">加水印</el-checkbox>
-    </div>
   </div>
 </template>
 
@@ -36,13 +32,11 @@ export default {
   },
   data() {
     return {
-      isCompress: true,
-      isAddWatermark: false
     }
   },
   methods: {
     uploadFavorImage(img, imageUrls) {
-      uploadFile(img.file, this.isCompress, this.isAddWatermark).then(rsp => {
+      uploadFile(img.file).then(rsp => {
         if (rsp.code === 200) {
           imageUrls.push(rsp.url)
         } else {

@@ -14,8 +14,12 @@ spring:
   mvc:
     servlet:
       load-on-startup: 1
+    date-format: yyyy-MM-dd HH:mm:ss
     favicon:
       enabled: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   thymeleaf:
     cache: false # 页面热更新
   profiles:

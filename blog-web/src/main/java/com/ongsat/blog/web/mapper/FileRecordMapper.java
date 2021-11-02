@@ -12,7 +12,4 @@ import java.util.List;
 @Repository
 public interface FileRecordMapper extends BaseMapper<FileRecordPO>, BaseTableName {
 
-    @Select("select * from" + t_file_record_space + "order by create_at desc")
-    List<FileRecordPO> selectByPage(Page page);
-
 }

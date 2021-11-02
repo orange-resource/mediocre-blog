@@ -2,9 +2,9 @@ package com.ongsat.blog.web.controller.admin;
 
 import com.ongsat.blog.api.constant.ApiAuthConstant;
 import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.admin.SectionCreateParamVO;
-import com.ongsat.blog.api.entity.vo.admin.SectionDeleteParamVO;
-import com.ongsat.blog.api.entity.vo.admin.SectionUpdateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.section.SectionCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.section.SectionDeleteParamVO;
+import com.ongsat.blog.api.entity.vo.admin.section.SectionUpdateParamVO;
 import com.ongsat.blog.web.config.annotation.ApiAuth;
 import com.ongsat.blog.web.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,9 @@ public class SectionController {
     private SectionService sectionService;
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)
-    @PostMapping(value = "/getAll")
-    public Response getAll() {
-        return sectionService.getAll();
+    @PostMapping(value = "/queryAll")
+    public Response queryAll() {
+        return sectionService.queryAll();
     }
 
     @ApiAuth(type = ApiAuthConstant.ADMIN)

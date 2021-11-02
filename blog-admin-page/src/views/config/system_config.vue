@@ -29,21 +29,25 @@
             label-width="108px"
             class="demo-ruleForm">
 
-            <el-form-item label="网站logo" required>
+            <el-form-item label="网站logo(ico)" required>
               <single-upload-image :url.sync="form.logoUrl"/>
+            </el-form-item>
+
+            <el-form-item label="网站大logo" required>
+              <single-upload-image :url.sync="form.bigLogoUrl"/>
             </el-form-item>
 
             <el-form-item label="网站标题" required>
               <el-input v-model="form.title" class="common-width"/>
             </el-form-item>
 
-            <el-form-item label="网站关键词" required>
-              <el-input v-model="form.keywords" rows="4" type="textarea" class="common-width"/>
+            <el-form-item label="SEO关键词" required>
+              <el-input v-model="form.seoKeywords" rows="4" type="textarea" class="common-width"/>
             </el-form-item>
 
-            <el-form-item label="网站描述" required>
+            <el-form-item label="SEO描述" required>
               <el-input
-                v-model="form.description"
+                v-model="form.seoDescription"
                 rows="6"
                 type="textarea"
                 class="common-width"/>
@@ -53,8 +57,17 @@
               <el-input v-model="form.footer" rows="6" type="textarea" class="common-width"/>
             </el-form-item>
 
-            <el-form-item label="页面颜色 0=正常 1=灰色" required>
-              <el-input v-model="form.pageGray" class="common-width"/>
+            <el-form-item label="页面颜色" required>
+              <el-radio v-model="form.pageGrayMode" label="0">正常颜色</el-radio>
+              <el-radio v-model="form.pageGrayMode" label="1">灰色</el-radio>
+            </el-form-item>
+
+            <el-form-item label="页面通用页头Html" required>
+              <el-input v-model="form.commonHeadHtml" rows="6" type="textarea" class="common-width"/>
+            </el-form-item>
+
+            <el-form-item label="页面通用页脚Html" required>
+              <el-input v-model="form.commonFooterHtml" rows="6" type="textarea" class="common-width"/>
             </el-form-item>
 
             <el-form-item>
@@ -87,19 +100,23 @@ export default {
       // 表单配置
       form: {
         logoUrl: '',
+        bigLogoUrl: '',
         title: '',
-        keywords: '',
-        description: '',
+        seoKeywords: '',
+        seoDescription: '',
         footer: '',
-        pageGray: ''
+        pageGrayMode: '0',
+        commonHeadHtml: '',
+        commonFooterHtml: ''
       }
     }
   },
   mounted() {
-    this.$axios.post('/system/getSingle').then((rsp) => {
+    this.$axios.post('/system/get').then((rsp) => {
       if (rsp.code === 200) {
         if (rsp.data.detail !== null) {
           this.form = rsp.data.detail
+          this.form.pageGrayMode = this.form.pageGrayMode.toString()
         }
         this.isCreate = 1
         this.formButtonName = '立即保存'
@@ -113,15 +130,19 @@ export default {
         this.$message.warning('请上传logo')
         return
       }
+      if (this.form.bigLogoUrl === '') {
+        this.$message.warning('请上传大logo')
+        return
+      }
       if (this.form.title === '') {
         this.$message.warning('请填写网站标题')
         return
       }
-      if (this.form.keywords === '') {
+      if (this.form.seoKeywords === '') {
         this.$message.warning('请填写网站关键词')
         return
       }
-      if (this.form.description === '') {
+      if (this.form.seoDescription === '') {
         this.$message.warning('请填写网站描述')
         return
       }
@@ -129,7 +150,7 @@ export default {
         this.$message.warning('请填写网站底部信息')
         return
       }
-      if (this.form.pageGray === '') {
+      if (this.form.pageGrayMode === '') {
         this.$message.warning('请填写页面颜色')
         return
       }

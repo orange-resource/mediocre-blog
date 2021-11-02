@@ -7,10 +7,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ongsat.blog.api.constant.SchemeNameConstant;
 import com.ongsat.blog.api.entity.po.AliyunOssPO;
 import com.ongsat.blog.api.entity.po.FileRecordPO;
+import com.ongsat.blog.api.entity.vo.admin.oss.OssConfigSaveParamVO;
+import com.ongsat.blog.api.response.Response;
+import com.ongsat.blog.api.response.ResultBuilder;
+import com.ongsat.blog.api.response.RspCode;
+import com.ongsat.blog.web.common.convert.ConvertObject;
 import com.ongsat.blog.web.mapper.AliyunOssMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 @Service
 public class OssService extends ServiceImpl<AliyunOssMapper, AliyunOssPO> {
@@ -18,9 +25,29 @@ public class OssService extends ServiceImpl<AliyunOssMapper, AliyunOssPO> {
     @Autowired
     private FileRecordService fileRecordService;
 
-    public AliyunOssPO getOssConfig() {
-        AliyunOssPO aliyunOssPO = super.baseMapper.getOneBySchemeName(SchemeNameConstant.DEFAULT);
+    @Autowired
+    private ConvertObject convertObject;
+
+    public Response getItemToRsp() {
+        AliyunOssPO aliyunOssPO = super.baseMapper.selectBySchemeName(SchemeNameConstant.DEFAULT);
+        Map<String, Object> build = ResultBuilder.create().setDetail(aliyunOssPO).build();
+        return Response.build(RspCode.QUERY_SUCCESS, build);
+    }
+
+    private AliyunOssPO getOssConfig() {
+        AliyunOssPO aliyunOssPO = super.baseMapper.selectBySchemeName(SchemeNameConstant.DEFAULT);
         return aliyunOssPO;
+    }
+
+    public synchronized Response save(OssConfigSaveParamVO ossConfigSaveParamVO) {
+        AliyunOssPO aliyunOssPO = convertObject.toAliyunOssPO(ossConfigSaveParamVO);
+        aliyunOssPO.setSchemeName(SchemeNameConstant.DEFAULT);
+
+        boolean update = super.saveOrUpdate(aliyunOssPO);
+        if (update) {
+            return Response.success();
+        }
+        return Response.error();
     }
 
     /**

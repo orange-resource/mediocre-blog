@@ -32,7 +32,7 @@
             class="demo-ruleForm">
 
             <el-form-item label="展示图片" required>
-              <single-upload-image :url.sync="form.mainImgUrl"/>
+              <single-upload-image :url.sync="form.masterImageUrl"/>
             </el-form-item>
 
             <el-form-item label="标题" required>
@@ -86,7 +86,7 @@ export default {
         title: '',
         description: '',
         sort: 100,
-        mainImgUrl: ''
+        masterImageUrl: ''
       }
 
     }
@@ -108,7 +108,7 @@ export default {
     },
     // 表单操作
     submitForm(formName) {
-      if (this.form.mainImgUrl === '') {
+      if (this.form.masterImageUrl === '') {
         this.$message.warning('请上传展示图片')
         return
       }

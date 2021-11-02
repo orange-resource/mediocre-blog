@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface AliyunOssMapper extends BaseMapper<AliyunOssPO>, BaseTableName {
 
     @Select("select * from" + t_aliyun_oss_space + "where scheme_name = #{schemeName}")
-    AliyunOssPO getOneBySchemeName(@Param("schemeName") String schemeName);
+    AliyunOssPO selectBySchemeName(@Param("schemeName") String schemeName);
 
 }

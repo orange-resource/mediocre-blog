@@ -31,16 +31,16 @@ public enum RspCode {
     UPLOAD_SUCCESS(1001, "上传成功"),
     LOGOUT_SUCCESS(1002, "登出成功"),
 
-    LOGIN_EXPIRED(3000, "凭证已过期，请重新登录"),
-    FILE_TYPE_DOES_NOT_MATCH(3001, "上传文件格式不正确"),
-    IMG_CONTENT_IS_TOO_LARGE(3011, "上传图片大小不能超过2MB哟"),
-    VIDEO_CONTENT_IS_TOO_LARGE(3012, "上传视频大小不能超过5MB哟"),
-    REPEAT_ITEM(3013, "不能添加重复项"),
-    VERIFY_CODE_NOT_EXIST(3014, "验证码不存在"),
+    LOGIN_EXPIRED_WARN(3000, "凭证已过期，请重新登录"),
+    FILE_TYPE_DOES_NOT_MATCH_WARN(3001, "上传文件格式不正确"),
+    IMG_CONTENT_IS_TOO_LARGE_WARN(3011, "上传图片大小不能超过2MB哟"),
+    VIDEO_CONTENT_IS_TOO_LARGE_WARN(3012, "上传视频大小不能超过5MB哟"),
+    REPEAT_ITEM_WARN(3013, "不能添加重复项"),
+    URI_REPEAT_WARN(3020, "URI资源标识符重复"),
+    ACCOUNT_FILL_WARN(3025, "用户名或者密码错误"),
+    FILE_EMPTY_WARN(3030, "不能上传空文件"),
 
-    ACCOUNT_ERROR(5001, "用户名或者密码错误"),
     UPLOAD_ERROR(5002, "上传失败"),
-    FILE_EMPTY(5003, "不能上传空文件"),
     ;
 
     private int code;

@@ -7,7 +7,7 @@ import com.ongsat.blog.api.response.Response;
 import com.ongsat.blog.api.response.ResultBuilder;
 import com.ongsat.blog.api.response.RspCode;
 import com.ongsat.blog.api.entity.po.AdminUserPO;
-import com.ongsat.blog.api.entity.vo.admin.AdminUserLoginParamVO;
+import com.ongsat.blog.api.entity.vo.admin.adminuser.AdminUserLoginParamVO;
 import com.ongsat.blog.web.mapper.AdminUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,9 +28,11 @@ public class AdminUserService extends ServiceImpl<AdminUserMapper, AdminUserPO> 
         String password = adminUserLoginParamVO.getPassword();
 
         int count = super.baseMapper.selectCount(username, password);
-        if (count == 0) return Response.build(RspCode.ACCOUNT_ERROR);
+        if (count == 0) {
+            return Response.build(RspCode.ACCOUNT_FILL_WARN);
+        }
 
-        String token = IdUtil.simpleUUID() + IdUtil.objectId();
+        String token = "MB" + IdUtil.simpleUUID() + IdUtil.objectId() + IdUtil.objectId();
         redisTemplate.opsForValue().set(RedisConstant.TOKEN + token, username, 1, TimeUnit.DAYS);
 
         Map<String, Object> build = new ResultBuilder()

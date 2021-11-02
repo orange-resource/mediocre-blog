@@ -31,6 +31,10 @@
             label-width="100px"
             class="demo-ruleForm">
 
+            <el-form-item v-if="isShowParentTag" label="上级分类">
+              <el-tag type="danger">{{ parentCategoryName }}</el-tag>
+            </el-form-item>
+            
             <el-form-item label="分类名称" required>
               <el-input v-model="form.name" class="common-width"/>
             </el-form-item>
@@ -68,6 +72,9 @@ export default {
       registerStatus: true,
       serviceStatus: true,
 
+      isShowParentTag: false,
+      parentCategoryName: '...',
+
       // 表单配置
       form: {
         name: '',
@@ -85,6 +92,11 @@ export default {
       this.formButtonName = '立即保存'
     } else if (this.$route.params.pid != null) {
       this.form.categoryId = this.$route.params.pid
+    }
+
+    if (this.$route.params.childInfo.isChild) {
+      this.isShowParentTag = true
+      this.parentCategoryName = this.$route.params.childInfo.parentName
     }
   },
   methods: {

@@ -1,24 +1,24 @@
 package com.ongsat.blog.web.common.convert;
 
-import com.ongsat.blog.api.entity.dataobject.ArticleNewsDO;
-import com.ongsat.blog.api.entity.dataobject.ArticleRecommendDO;
-import com.ongsat.blog.api.entity.dataobject.BlogrollDO;
-import com.ongsat.blog.api.entity.dataobject.CategoryTreeDO;
 import com.ongsat.blog.api.entity.po.*;
-import com.ongsat.blog.api.entity.vo.admin.*;
-import com.ongsat.blog.api.entity.vo.admin.carousel.CarouselSaveParamVO;
-import com.ongsat.blog.api.entity.vo.api.ArticleCardListVO;
-import com.ongsat.blog.api.entity.vo.api.ArticleGetSingleByShowPageVO;
-import com.ongsat.blog.api.entity.vo.api.ArticleWechatVO;
-import com.ongsat.blog.api.entity.vo.api.CategoryTreeVO;
+import com.ongsat.blog.api.entity.vo.admin.article.ArticleCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.article.ArticleUpdateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.banner.BannerSaveParamVO;
+import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollUpdateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.oss.OssConfigSaveParamVO;
+import com.ongsat.blog.api.entity.vo.admin.section.SectionCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.section.SectionUpdateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.systemconfig.SystemConfigSaveParamVO;
+import com.ongsat.blog.api.entity.vo.api.category.CategoryTreeVO;
 import org.mapstruct.Mapper;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ConvertObject {
 
     SystemConfigPO toSystemConfigPO(SystemConfigSaveParamVO systemConfigSaveParamVO);
+
+    AliyunOssPO toAliyunOssPO(OssConfigSaveParamVO ossConfigSaveParamVO);
 
     BlogrollPO toBlogrollPO(BlogrollCreateParamVO blogrollCreateParamVO);
 
@@ -28,35 +28,11 @@ public interface ConvertObject {
 
     SectionPO toSectionPO(SectionUpdateParamVO sectionUpdateParamVO);
 
-    ArticlePO toArticlePO(ArticleSaveParamVO articleSaveParamVO);
+    ArticlePO toArticlePO(ArticleCreateParamVO articleCreateParamVO);
 
-    BannerPO toCarouselPO(CarouselSaveParamVO carouselSaveParamVO);
+    ArticlePO toArticlePO(ArticleUpdateParamVO articleUpdateParamVO);
 
-    BlogrollDO toBlogrollDO(BlogrollPO blogrollPO);
-
-    List<BlogrollDO> toBlogrollDO(List<BlogrollPO> blogrollPO);
-
-    ArticleNewsDO toArticleNewsDO(ArticlePO articlePO);
-
-    List<ArticleNewsDO> toArticleNewsDO(List<ArticlePO> articlePO);
-
-    ArticleRecommendDO toArticleRecommendDO(ArticlePO articlePO);
-
-    List<ArticleRecommendDO> toArticleRecommendDO(List<ArticlePO> articlePO);
-
-    ArticleGetSingleByShowPageVO toArticleGetSingleByShowPageVO(ArticlePO articlePO);
-
-    ArticleCardListVO toArticleCardListVO(ArticlePO articlePO);
-
-    List<ArticleCardListVO> toArticleCardListVO(List<ArticlePO> articlePO);
-
-    ArticleWechatVO toArticleWechatVO(ArticlePO articlePO);
-
-    List<ArticleWechatVO> toArticleWechatVO(List<ArticlePO> articlePO);
-
-    CategoryTreeDO toCategoryTreeDO(CategoryTreeDO categoryTreeDO);
-
-    CategoryPO toCategoryPO(CategoryTreeDO categoryTreeDO);
+    BannerPO toBannerPO(BannerSaveParamVO bannerSaveParamVO);
 
     CategoryPO toCategoryPO(CategoryTreeVO categoryTreeVO);
 

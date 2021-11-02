@@ -2,7 +2,7 @@ package com.ongsat.blog.web.controller.admin;
 
 import com.ongsat.blog.api.constant.ApiAuthConstant;
 import com.ongsat.blog.api.response.Response;
-import com.ongsat.blog.api.entity.vo.admin.AdminUserLoginParamVO;
+import com.ongsat.blog.api.entity.vo.admin.adminuser.AdminUserLoginParamVO;
 import com.ongsat.blog.web.config.annotation.ApiAuth;
 import com.ongsat.blog.web.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;

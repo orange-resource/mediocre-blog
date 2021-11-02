@@ -14,10 +14,6 @@
           <span class="avatar-uploader-font">点击上传</span>
         </div>
       </el-upload>
-      <div style="display: flex;flex-direction: row">
-        <el-checkbox v-model="isCompress">压缩</el-checkbox>
-        <el-checkbox v-model="isAddWatermark">加水印</el-checkbox>
-      </div>
     </div>
   </div>
 </template>
@@ -35,8 +31,6 @@ export default {
   },
   data() {
     return {
-      isCompress: true,
-      isAddWatermark: false
     }
   },
   methods: {
@@ -60,7 +54,7 @@ export default {
       return true
     },
     uploadImg(img) {
-      uploadFile(img.file, this.isCompress, this.isAddWatermark).then(rsp => {
+      uploadFile(img.file).then(rsp => {
         if (rsp.code === 200) {
           this.$emit('update:url', rsp.url)
           this.$emit('onUrl', rsp.url)

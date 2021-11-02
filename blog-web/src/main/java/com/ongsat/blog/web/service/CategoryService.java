@@ -2,14 +2,14 @@ package com.ongsat.blog.web.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryQueryChildListParamVO;
 import com.ongsat.blog.api.response.Response;
 import com.ongsat.blog.api.response.ResultBuilder;
 import com.ongsat.blog.api.response.RspCode;
 import com.ongsat.blog.api.entity.po.CategoryPO;
-import com.ongsat.blog.api.entity.vo.admin.CategoryCreateParamVO;
-import com.ongsat.blog.api.entity.vo.admin.CategoryDeleteParamVO;
-import com.ongsat.blog.api.entity.vo.admin.CategoryUpdateParamVO;
-import com.ongsat.blog.api.entity.vo.admin.category.CategoryGetChildParamVO;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryCreateParamVO;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryDeleteParamVO;
+import com.ongsat.blog.api.entity.vo.admin.category.CategoryUpdateParamVO;
 import com.ongsat.blog.web.mapper.CategoryMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +19,8 @@ import java.util.Map;
 @Service
 public class CategoryService extends ServiceImpl<CategoryMapper, CategoryPO> {
 
-    public Response getAll() {
-        List<CategoryPO> list = super.baseMapper.selectAll();
+    public Response queryAll() {
+        List<CategoryPO> list = super.baseMapper.selectListBySort();
 
         Map<String, Object> build = new ResultBuilder()
                 .setList(list)
@@ -28,8 +28,8 @@ public class CategoryService extends ServiceImpl<CategoryMapper, CategoryPO> {
         return Response.build(RspCode.QUERY_SUCCESS, build);
     }
 
-    public Response getTopList() {
-        List<CategoryPO> categoryPOList = super.baseMapper.selectTopList();
+    public Response queryOneLevelList() {
+        List<CategoryPO> categoryPOList = super.baseMapper.selectOneLevelList();
 
         Map<String, Object> build = new ResultBuilder()
                 .setList(categoryPOList)
@@ -37,18 +37,15 @@ public class CategoryService extends ServiceImpl<CategoryMapper, CategoryPO> {
         return Response.build(RspCode.QUERY_SUCCESS, build);
     }
 
-    public Response getChild(CategoryGetChildParamVO categoryGetChildParamVO) {
-        String id = categoryGetChildParamVO.getId();
-        List<CategoryPO> categoryPOList = super.baseMapper.getChild(id);
+    public Response queryChildList(CategoryQueryChildListParamVO categoryQueryChildListParamVO) {
+        String id = categoryQueryChildListParamVO.getId();
+        List<CategoryPO> categoryPOList = super.baseMapper.selectChildListById(id);
         Map<String, Object> build = new ResultBuilder()
                 .setList(categoryPOList)
                 .build();
         return Response.build(RspCode.QUERY_SUCCESS, build);
     }
 
-    /**
-     * TODO: 逻辑不严谨
-     */
     public Response create(CategoryCreateParamVO categoryCreateParamVO) {
         String categoryId = categoryCreateParamVO.getCategoryId();
         String name = categoryCreateParamVO.getName();
@@ -61,13 +58,12 @@ public class CategoryService extends ServiceImpl<CategoryMapper, CategoryPO> {
             categoryPO.setPid(categoryId);
         }
         int insert = super.baseMapper.insert(categoryPO);
-        if (insert == 0) return Response.error();
+        if (insert == 0) {
+            return Response.error();
+        }
         return Response.success();
     }
 
-    /**
-     * 逻辑不严谨
-     */
     public Response update(CategoryUpdateParamVO categoryUpdateParamVO) {
         String categoryId = categoryUpdateParamVO.getCategoryId();
         String name = categoryUpdateParamVO.getName();
@@ -79,17 +75,18 @@ public class CategoryService extends ServiceImpl<CategoryMapper, CategoryPO> {
         categoryPO.setName(name);
 
         int update = super.baseMapper.updateById(categoryPO);
-        if (update == 0) return Response.error();
+        if (update == 0) {
+            return Response.error();
+        }
         return Response.success();
     }
 
-    /**
-     * 逻辑不严谨
-     */
     public Response delete(CategoryDeleteParamVO categoryDeleteParamVO) {
         String categoryId = categoryDeleteParamVO.getCategoryId();
         int delete = super.baseMapper.deleteById(categoryId);
-        if (delete == 0) return Response.error();
+        if (delete == 0) {
+            return Response.error();
+        }
         return Response.success();
     }
 

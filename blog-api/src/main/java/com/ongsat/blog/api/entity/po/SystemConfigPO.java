@@ -12,9 +12,7 @@ import java.io.Serializable;
 public class SystemConfigPO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * scheme_name
-     */
+    @TableId(value = "scheme_name", type = IdType.NONE)
     private String schemeName;
 
     /**
@@ -48,10 +46,25 @@ public class SystemConfigPO implements Serializable {
     private Integer pageGrayMode;
 
     /**
+     * big_logo_url
+     */
+    private String bigLogoUrl;
+
+    /**
      * 网站logo
      * logo_url
      */
     private String logoUrl;
+
+    /**
+     * common_head_html
+     */
+    private String commonHeadHtml;
+
+    /**
+     * common_footer_html
+     */
+    private String commonFooterHtml;
 
     public String getSchemeName() {
         return schemeName;
@@ -101,11 +114,35 @@ public class SystemConfigPO implements Serializable {
         this.pageGrayMode = pageGrayMode;
     }
 
+    public String getBigLogoUrl() {
+        return bigLogoUrl;
+    }
+
+    public void setBigLogoUrl(String bigLogoUrl) {
+        this.bigLogoUrl = bigLogoUrl;
+    }
+
     public String getLogoUrl() {
         return logoUrl;
     }
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    public String getCommonHeadHtml() {
+        return commonHeadHtml;
+    }
+
+    public void setCommonHeadHtml(String commonHeadHtml) {
+        this.commonHeadHtml = commonHeadHtml;
+    }
+
+    public String getCommonFooterHtml() {
+        return commonFooterHtml;
+    }
+
+    public void setCommonFooterHtml(String commonFooterHtml) {
+        this.commonFooterHtml = commonFooterHtml;
     }
 }

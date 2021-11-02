@@ -81,12 +81,12 @@
               align="center"
             />
             <el-table-column
-              prop="mainImgUrl"
+              prop="masterImageUrl"
               align="center"
               label="展示图片"
             >
               <template slot-scope="scope">
-                <img :src="scope.row.mainImgUrl" class="openImage" height="150px" >
+                <img :src="scope.row.masterImageUrl" class="openImage" height="150px" width="100%" >
               </template>
             </el-table-column>
             <el-table-column
@@ -143,7 +143,6 @@
 </template>
 
 <script>
-const time = require('@/utils/time.js')
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'viewerjs'
 export default {
@@ -183,12 +182,7 @@ export default {
       // data.current = this.tablePageNum
       // data.size = this.tablePageSize
 
-      this.$axios.post('/section/getAll').then((rsp) => {
-        // this.tableTotal = rsp.data.total
-        for (let i = 0; i < rsp.data.list.length; i++) {
-          rsp.data.list[i].createAt = time.timeStampDateSpecial({ time: rsp.data.list[i].createAt })
-          rsp.data.list[i].updateAt = time.timeStampDateSpecial({ time: rsp.data.list[i].updateAt })
-        }
+      this.$axios.post('/section/queryAll').then((rsp) => {
         this.tableData = rsp.data.list
         this.openImage()
       })

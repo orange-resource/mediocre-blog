@@ -174,12 +174,8 @@ export default {
       data.offset = this.tablePageNum
       data.limit = this.tablePageSize
 
-      this.$axios.post('/blogroll/getByPage', data).then((rsp) => {
+      this.$axios.post('/blogroll/search', data).then((rsp) => {
         this.tableTotal = rsp.data.total
-        for (let i = 0; i < rsp.data.list.length; i++) {
-          rsp.data.list[i].createAt = time.timeStampDateSpecial({ time: rsp.data.list[i].createAt })
-          rsp.data.list[i].updateAt = time.timeStampDateSpecial({ time: rsp.data.list[i].updateAt })
-        }
         this.tableData = rsp.data.list
         this.openImage()
       })

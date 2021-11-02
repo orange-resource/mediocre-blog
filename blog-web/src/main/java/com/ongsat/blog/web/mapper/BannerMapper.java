@@ -12,9 +12,9 @@ import java.util.List;
 public interface BannerMapper extends BaseMapper<BannerPO>, BaseTableName {
 
     @Select("select * from" + t_banner_space + "order by create_at desc")
-    List<BannerPO> selectAll();
+    List<BannerPO> selectListByCreateAt();
 
     @Select("select * from" + t_banner_space + "order by sort desc")
-    List<BannerPO> selectAllBySort();
+    List<BannerPO> selectListBySort();
 
 }
