@@ -182,27 +182,31 @@
     //     })
     // })
 
+    var isRenderPagination = [(${list.size()})] > 0;
+
     var metering = 0;
     $(function () {
-        $('#pagination').twbsPagination({
-            startPage: Number('[(${current})]'),
-            totalPages: Number('[(${pages})]'),
-            visiblePages: 3,
-            initiateStartPageClick: true,
-            hideOnlyOnePage: true,
-            first:'首页',
-            last:'末页',
-            prev:'上一页',
-            next:'下一页',
-            nextClass: "page-item-none",
-            prevClass: "page-item-none",
-            onPageClick: function (event, page) {
-                metering += 1;
-                if (metering !== 1) {
-                    window.location.href = "?page=" + page;
+        if (isRenderPagination) {
+            $('#pagination').twbsPagination({
+                startPage: Number('[(${current})]'),
+                totalPages: Number('[(${pages})]'),
+                visiblePages: 3,
+                initiateStartPageClick: true,
+                hideOnlyOnePage: true,
+                first:'首页',
+                last:'末页',
+                prev:'上一页',
+                next:'下一页',
+                nextClass: "page-item-none",
+                prevClass: "page-item-none",
+                onPageClick: function (event, page) {
+                    metering += 1;
+                    if (metering !== 1) {
+                        window.location.href = "?page=" + page;
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
 </script>

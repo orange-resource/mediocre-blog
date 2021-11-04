@@ -199,12 +199,16 @@
                 <excludes>
                     <exclude>application-*.yml</exclude>
                 </excludes>
+                <includes>
+                    <include>static/font-awesome/fonts/**</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>application-{profiles.active}.yml</exclude>
+                    <exclude>static/font-awesome/fonts/**</exclude>
                 </excludes>
             </resource>
         </resources>
