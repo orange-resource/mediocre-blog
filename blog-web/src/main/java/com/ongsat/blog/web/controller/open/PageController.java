@@ -2,11 +2,13 @@ package com.ongsat.blog.web.controller.open;
 
 import com.ongsat.blog.api.constant.RedisConstant;
 import com.ongsat.blog.web.service.ArticleService;
+import com.ongsat.blog.web.service.RssConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -19,6 +21,9 @@ public class PageController {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private RssConfigService rssConfigService;
 
     private Map getCommon() {
         Object deserialize = redisTemplate.opsForValue().get(RedisConstant.COMMON_PAGE_DATA);
@@ -40,9 +45,15 @@ public class PageController {
         return home;
     }
 
+    @GetMapping(value = {"/rss", "/feed"}, produces = {"application/xml;charset=UTF-8"})
+    @ResponseBody
+    public String feed() {
+        return rssConfigService.getFeedToString();
+    }
+
     @GetMapping(value = "/all")
-    public ModelAndView queryAllArticle(Integer page) {
-        Map<String, Object> all = articleService.queryAllArticleToMap(null == page ? 1 : page);
+    public ModelAndView queryArticleByPage(Integer page) {
+        Map<String, Object> all = articleService.queryArticleByPageToMap(null == page ? 1 : page);
 
         ModelAndView modelAndView = this.createCommonModelView("list");
 

@@ -7,6 +7,7 @@ import com.ongsat.blog.api.entity.vo.admin.banner.BannerSaveParamVO;
 import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollCreateParamVO;
 import com.ongsat.blog.api.entity.vo.admin.blogroll.BlogrollUpdateParamVO;
 import com.ongsat.blog.api.entity.vo.admin.oss.OssConfigSaveParamVO;
+import com.ongsat.blog.api.entity.vo.admin.rssconfig.RssConfigSaveParamVO;
 import com.ongsat.blog.api.entity.vo.admin.section.SectionCreateParamVO;
 import com.ongsat.blog.api.entity.vo.admin.section.SectionUpdateParamVO;
 import com.ongsat.blog.api.entity.vo.admin.systemconfig.SystemConfigSaveParamVO;
@@ -35,5 +36,7 @@ public interface ConvertObject {
     BannerPO toBannerPO(BannerSaveParamVO bannerSaveParamVO);
 
     CategoryPO toCategoryPO(CategoryTreeVO categoryTreeVO);
+
+    RssConfigPO toRssConfigPO(RssConfigSaveParamVO rssConfigSaveParamVO);
 
 }

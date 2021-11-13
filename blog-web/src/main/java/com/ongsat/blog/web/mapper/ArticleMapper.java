@@ -6,13 +6,15 @@ import com.ongsat.blog.api.entity.po.ArticlePO;
 import com.ongsat.blog.api.entity.po.BaseTableName;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface ArticleMapper extends BaseMapper<ArticlePO>, BaseTableName {
+
+    @Select("select * from" + t_article_space + "order by create_at desc limit 1")
+    ArticlePO selectByLatest();
 
     @Select("<script>" +
             "select * from" + t_article_space +

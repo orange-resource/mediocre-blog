@@ -35,4 +35,7 @@ public interface BaseTableName {
     String t_blog_version = "t_blog_version";
     String t_blog_version_space = " t_blog_version ";
 
+    String t_rss_config = "t_rss_config";
+    String t_rss_config_space = " t_rss_config ";
+
 }

@@ -113,7 +113,7 @@ public class ArticleService extends ServiceImpl<ArticleMapper, ArticlePO> {
         return builder.build();
     }
 
-    public Map<String, Object> queryAllArticleToMap(int offset) {
+    public Map<String, Object> queryArticleByPageToMap(int offset) {
         Page<Object> page = new Page<>(offset, 5);
         List<ArticlePO> articlePOList = super.baseMapper.selectListByPage(page);
 

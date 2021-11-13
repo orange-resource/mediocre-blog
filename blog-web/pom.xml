@@ -39,6 +39,7 @@
         <gson.version>2.8.6</gson.version>
         <validator.version>6.0.17.Final</validator.version>
         <oss.version>3.8.0</oss.version>
+        <rome.version>1.16.0</rome.version>
     </properties>
 
     <dependencies>
@@ -158,6 +159,12 @@
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>${oss.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
+            <version>${rome.version}</version>
         </dependency>
 
     </dependencies>

@@ -176,6 +176,12 @@ export const constantRouterMap = [
         name: 'OssConfig',
         component: () => import('@/views/config/oss_config'),
         meta: { title: 'OSS配置', icon: '配置' }
+      },
+      {
+        path: 'rss_config',
+        name: 'RssConfig',
+        component: () => import('@/views/config/rss_config'),
+        meta: { title: 'RSS配置', icon: '配置' }
       }
     ]
   },

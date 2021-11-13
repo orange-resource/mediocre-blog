@@ -66,6 +66,8 @@
         </table>
         <table tableName="t_blog_version" domainObjectName="BlogVersionPO">
         </table>
+        <table tableName="t_rss_config" domainObjectName="RssConfigPO">
+        </table>
 
     </context>
 
