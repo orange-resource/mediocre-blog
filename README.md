@@ -67,11 +67,11 @@
 
 **网站图片预览**
 ![首页](https://ongsat.oss-cn-hangzhou.aliyuncs.com/opensource/MediocreBlog/%E9%A6%96%E9%A1%B5.png)
-
+---
 ![首页底部](https://ongsat.oss-cn-hangzhou.aliyuncs.com/opensource/MediocreBlog/%E9%A6%96%E9%A1%B5%E5%BA%95%E9%83%A8.png)
-
+---
 ![文章](https://ongsat.oss-cn-hangzhou.aliyuncs.com/opensource/MediocreBlog/%E6%96%87%E7%AB%A0.png)
-
+---
 ![列表页](https://ongsat.oss-cn-hangzhou.aliyuncs.com/opensource/MediocreBlog/%E5%88%97%E8%A1%A8%E9%A1%B5.png)
 
 **后台管理页面预览**
