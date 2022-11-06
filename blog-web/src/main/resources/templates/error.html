@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <title>[[${response.code}]]</title>
+
+    <style>
+        .code-box{
+            text-align: center;
+            font-size: 50px;
+            margin-top: 40px;
+        }
+        p{
+            text-align: center;
+        }
+        .button-box {
+            display: flex;
+            justify-content: center;
+        }
+        .button{
+            width: 100px;
+            height: 40px;
+            background-color: #F56C6C;
+            display: block;
+            text-align: center;
+            line-height: 40px;
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="code-box">
+        [[${response.code}]]
+    </div>
+    <p>[[${response.message}]]</p>
+    <div class="button-box">
+        <a class="button" href="/">返回首页</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+
+server:
+  port: 9055
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: blog-web
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 20MB
+  mvc:
+    servlet:
+      load-on-startup: 1
+    date-format: yyyy-MM-dd HH:mm:ss
+    favicon:
+      enabled: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  thymeleaf:
+    cache: false # 页面热更新
+  profiles:
+    active: @profiles.active@

@@ -1,0 +1,38 @@
+
+<div th:fragment="header">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/cl-css.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/highlight/styles/railscasts.css}" rel="stylesheet" >
+
+    <link th:href="@{/notify/css/notify.css}" rel="stylesheet" >
+    <link th:href="@{/notify/css/prettify.css}" rel="stylesheet" >
+
+    <div thk:html="${config.commonHeadHtml}"></div>
+</div>
+
+<div th:fragment="home-footer">
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/notify/js/notify.js}"></script>
+    <script th:src="@{/notify/js/prettify.js}"></script>
+
+    <div thk:html="${config.commonFooterHtml}"></div>
+</div>
+
+<div th:fragment="footer">
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/js-cookie/js.cookie.js}"></script>
+    <script th:src="@{/jquery.lazyload/jquery.lazyload.js}"></script>
+    <script th:src="@{/jquery/twbsPagination.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/notify/js/notify.js}"></script>
+    <script th:src="@{/notify/js/prettify.js}"></script>
+    <script th:src="@{/highlight/highlight.pack.js}"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+        $(".lazy").lazyload();
+    </script>
+
+    <div thk:html="${config.commonFooterHtml}"></div>
+</div>
